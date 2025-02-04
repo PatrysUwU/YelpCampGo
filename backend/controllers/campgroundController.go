@@ -1,0 +1,38 @@
+package controllers
+
+import (
+	"backend/initializers"
+	"backend/models"
+	"fmt"
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
+
+func CreateCampground(c *gin.Context) {
+	var body struct {
+		Title       string
+		Price       float32
+		Description string
+		Location    string
+	}
+
+	if err := c.Bind(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to read body",
+		})
+	}
+
+	fmt.Println(body)
+
+	campground := models.CampgroundModel{Title: body.Title, Price: body.Price, Description: body.Description, Location: body.Location}
+
+	result := initializers.DB.Create(&campground)
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to create campground",
+		})
+	}
+
+	c.JSON(http.StatusOK, gin.H{})
+
+}
