@@ -36,3 +36,16 @@ func CreateCampground(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 
 }
+
+func AllCampgrounds(c *gin.Context) {
+	var campgrounds []models.CampgroundModel
+	result := initializers.DB.Find(&campgrounds)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Error fetching campgrounds from database",
+		})
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"campgrounds": campgrounds,
+	})
+}
