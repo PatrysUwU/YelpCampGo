@@ -11,7 +11,7 @@ import (
 func CreateCampground(c *gin.Context) {
 	var body struct {
 		Title       string
-		Price       float32
+		Price       float64
 		Description string
 		Location    string
 	}
