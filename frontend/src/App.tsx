@@ -1,7 +1,7 @@
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import {BrowserRouter, Navigate, Route, Routes} from "react-router";
 import Campgrounds from "./pages/Campgrounds/Campgrounds.tsx";
-import {dark} from "@mui/material/styles/createPalette";
+import CampgroundShowPage from "./pages/CampgroundShowPage/CampgroundShowPage.tsx";
 
 const darkTheme = createTheme({
     palette: {
@@ -43,6 +43,8 @@ const lightTheme = createTheme({
     },
 });
 
+
+
 export default function App() {
 
     return (
@@ -52,6 +54,7 @@ export default function App() {
                     <Routes>
                         <Route path="/" element={<Navigate to="/campgrounds"/>}/>
                         <Route path="/campgrounds" element={<Campgrounds/>}/>
+                        <Route path="/campgrounds/:id" element={<CampgroundShowPage/>}/>
                     </Routes>
                 </BrowserRouter>
                 <CssBaseline/>

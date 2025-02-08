@@ -19,6 +19,7 @@ func main() {
 
 	r := gin.Default()
 	r.GET("/campground", middleware.CORSMiddleware, controllers.AllCampgrounds)
+	r.GET("/campground/:id", middleware.CORSMiddleware, controllers.CampgroundByID)
 	r.POST("/campground/create", controllers.CreateCampground)
 	r.Run()
 }

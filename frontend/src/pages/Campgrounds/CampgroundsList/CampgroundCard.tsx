@@ -1,16 +1,19 @@
 import Box from "@mui/material/Box";
 import {JSX} from "react";
 import {Grid} from "@mui/material";
+import {useNavigate} from "react-router";
 
 
 interface props {
-    Title: string;
-    Price: number;
-    Description: string;
-    Image: string;
+    title: string;
+    price: number;
+    description: string;
+    image: string;
+    ID:number;
 }
 
-export default function CampgroundCard({Title, Price, Description, Image}: props): JSX.Element {
+export default function CampgroundCard({title, price, description, image,ID}: props): JSX.Element {
+    const navigate = useNavigate()
     return (
         <Box sx={{
             height: "200px",
@@ -23,17 +26,17 @@ export default function CampgroundCard({Title, Price, Description, Image}: props
 
         }}>
 
-            <Box component={"img"} sx={{maxHeight: "100%", display: "flex"}} src={Image}/>
+            <Box component={"img"} sx={{maxHeight: "100%", display: "flex"}} src={image}/>
 
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <Box>{Title}</Box>
+                    <Box sx={{cursor:"pointer"}} onClick={()=>{navigate(`./${ID}`)}}>{title}</Box>
                 </Grid>
                 <Grid item xs={6}>
-                    <Box>{Price}</Box>
+                    <Box>{price}</Box>
                 </Grid>
                 <Grid item xs={6}>
-                    <Box>{Description}</Box>
+                    <Box>{description}</Box>
                 </Grid>
 
             </Grid>

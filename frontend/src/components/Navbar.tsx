@@ -10,11 +10,13 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import {useNavigate} from "react-router";
 
 const pages = ["campgrounds"];
 
 export default function Navbar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+    const navigate = useNavigate()
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -24,7 +26,6 @@ export default function Navbar() {
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
-
 
 
     return (
@@ -79,7 +80,9 @@ export default function Navbar() {
                             sx={{display: {xs: 'block', md: 'none'}}}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                <MenuItem key={page} onClick={() => {
+                                    navigate("/campgrounds")
+                                }}>
                                     <Typography sx={{textAlign: 'center'}}>{page}</Typography>
                                 </MenuItem>
                             ))}
@@ -119,7 +122,9 @@ export default function Navbar() {
                         {pages.map((page) => (
                             <Button
                                 key={page}
-                                onClick={handleCloseNavMenu}
+                                onClick={() => {
+                                    navigate("/campgrounds")
+                                }}
                                 sx={{my: 2, color: 'white', display: 'block'}}
                             >
                                 {page}

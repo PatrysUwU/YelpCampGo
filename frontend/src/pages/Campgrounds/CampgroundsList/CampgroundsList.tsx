@@ -5,14 +5,11 @@ import CampgroundCard from "./CampgroundCard.tsx";
 
 interface Campground {
     ID: number;
-    CreatedAt: Date;
-    UpdatedAt: Date;
-    DeletedAt: Date | null;
-    Title: string;
-    Price: number;
-    Description: string;
-    Location: string;
-    Image: string;
+    title: string;
+    price: number;
+    description: string;
+    location: string;
+    image: string;
 }
 
 

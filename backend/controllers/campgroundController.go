@@ -49,3 +49,17 @@ func AllCampgrounds(c *gin.Context) {
 		"campgrounds": campgrounds,
 	})
 }
+
+func CampgroundByID(c *gin.Context) {
+	var campground models.CampgroundModel
+	result := initializers.DB.First(&campground, c.Param("id"))
+
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Error fetching campgrounds from database",
+		})
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"campground": campground,
+	})
+}
