@@ -22,5 +22,8 @@ func main() {
 	r.GET("/campground/:id", middleware.CORSMiddleware, controllers.CampgroundByID)
 	r.POST("/campground", controllers.CreateCampground)
 	r.PUT("/campground/:id", controllers.UpdateCampground)
-	r.Run()
+	err := r.Run()
+	if err != nil {
+		return
+	}
 }

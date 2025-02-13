@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"os"
+	"strconv"
 )
 
 type City struct {
@@ -91,7 +92,7 @@ func SeedDB() {
 		campground.Description = "xxxxxxxxx"
 		campground.Title = desc + " " + place
 		campground.Location = city.City
-		campground.Image = "https://images.unsplash.com/photo-1507599944477-f675212ef210?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+		campground.Image = "https://picsum.photos/400?random=" + strconv.Itoa(rand.Int())
 		initializers.DB.Create(&campground)
 	}
 
