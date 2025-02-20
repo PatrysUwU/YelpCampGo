@@ -5,20 +5,25 @@ import (
 	"backend/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
+type Body struct {
+	Title       string  `binding:"required"`
+	Price       float64 `binding:"required,gte=0.0"`
+	Description string  `binding:"required"`
+	Location    string  `binding:"required"`
+}
+
 func CreateCampground(c *gin.Context) {
-	var body struct {
-		Title       string
-		Price       float64
-		Description string
-		Location    string
-	}
+	var body Body
 
 	if err := c.Bind(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to read body",
+			"error":   "Failed to read body",
+			"message": err,
 		})
+		return
 	}
 
 	campground := models.CampgroundModel{Title: body.Title, Price: body.Price, Description: body.Description, Location: body.Location}
@@ -28,24 +33,30 @@ func CreateCampground(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Failed to create campground",
 		})
+		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{})
+	c.JSON(http.StatusOK, gin.H{
+		"id": campground.ID,
+	})
 
 }
+
 func UpdateCampground(c *gin.Context) {
-	var body struct {
-		Title       string
-		Price       float64
-		Description string
-		Location    string
-	}
+	var body Body
 	id := c.Param("id")
+	if _, err := strconv.ParseFloat(id, 64); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid ID",
+		})
+		return
+	}
 
 	if err := c.Bind(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Failed to read body",
 		})
+		return
 	}
 	campground := models.CampgroundModel{Title: body.Title, Price: body.Price, Description: body.Description, Location: body.Location}
 
@@ -57,6 +68,7 @@ func UpdateCampground(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Failed to update campground",
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{})
@@ -70,6 +82,7 @@ func AllCampgrounds(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Error fetching campgrounds from database",
 		})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"campgrounds": campgrounds,
@@ -78,14 +91,31 @@ func AllCampgrounds(c *gin.Context) {
 
 func CampgroundByID(c *gin.Context) {
 	var campground models.CampgroundModel
-	result := initializers.DB.First(&campground, c.Param("id"))
+	_ = initializers.DB.First(&campground, c.Param("id"))
 
-	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Error fetching campgrounds from database",
+	if campground.ID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Campground with that Id does not exist",
 		})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"campground": campground,
 	})
+}
+
+func DeleteCampground(c *gin.Context) {
+
+	id := c.Param("id")
+
+	if _, err := strconv.ParseFloat(id, 64); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid ID",
+		})
+		return
+	}
+
+	initializers.DB.Delete(&models.CampgroundModel{}, id)
+	c.JSON(http.StatusOK, gin.H{})
+
 }

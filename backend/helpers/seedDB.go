@@ -83,7 +83,7 @@ func SeedDB() {
 	}
 
 	initializers.DB.Unscoped().Delete(&models.CampgroundModel{}, "title LIKE ?", "%")
-	for _ = range 50 {
+	for range 50 {
 		var campground models.CampgroundModel
 		desc := descriptors[rand.Int()%len(descriptors)]
 		place := places[rand.Int()%len(places)]

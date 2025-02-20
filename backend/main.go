@@ -18,10 +18,12 @@ func init() {
 func main() {
 
 	r := gin.Default()
-	r.GET("/campground", middleware.CORSMiddleware, controllers.AllCampgrounds)
-	r.GET("/campground/:id", middleware.CORSMiddleware, controllers.CampgroundByID)
-	r.POST("/campground", controllers.CreateCampground)
-	r.PUT("/campground/:id", controllers.UpdateCampground)
+	r.Use(middleware.CORSMiddleware)
+	r.GET("/campgrounds", controllers.AllCampgrounds)
+	r.GET("/campgrounds/:id", controllers.CampgroundByID)
+	r.POST("/campgrounds", controllers.CreateCampground)
+	r.PUT("/campgrounds/:id", controllers.UpdateCampground)
+	r.DELETE("/campgrounds/:id", controllers.DeleteCampground)
 	err := r.Run()
 	if err != nil {
 		return
