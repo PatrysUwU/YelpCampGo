@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-type Body struct {
+type campgroundBody struct {
 	Title       string  `binding:"required"`
 	Price       float64 `binding:"required,gte=0.0"`
 	Description string  `binding:"required"`
@@ -16,11 +16,11 @@ type Body struct {
 }
 
 func CreateCampground(c *gin.Context) {
-	var body Body
+	var body campgroundBody
 
 	if err := c.Bind(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error":   "Failed to read body",
+			"error":   "Failed to read campgroundBody",
 			"message": err,
 		})
 		return
@@ -43,7 +43,7 @@ func CreateCampground(c *gin.Context) {
 }
 
 func UpdateCampground(c *gin.Context) {
-	var body Body
+	var body campgroundBody
 	id := c.Param("id")
 	if _, err := strconv.ParseFloat(id, 64); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -54,7 +54,7 @@ func UpdateCampground(c *gin.Context) {
 
 	if err := c.Bind(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to read body",
+			"error": "Failed to read campgroundBody",
 		})
 		return
 	}
