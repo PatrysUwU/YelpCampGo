@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"os"
+	"path/filepath"
 	"strconv"
 )
 
@@ -64,19 +65,22 @@ func loadCities(filename string) ([]City, error) {
 }
 
 func SeedDB() {
-	descriptors, err := loadJSONStrings("C:\\Users\\Patrys\\dev\\web\\YelpCampGo\\backend\\helpers\\Seeds\\descriptors.json")
+	relativePath := filepath.Join("helpers", "Seeds", "descriptors.json")
+	descriptors, err := loadJSONStrings(relativePath)
 	if err != nil {
 		fmt.Println("Błąd wczytywania descriptors.json:", err)
 		return
 	}
 
-	places, err := loadJSONStrings("C:\\Users\\Patrys\\dev\\web\\YelpCampGo\\backend\\helpers\\Seeds\\places.json")
+	relativePath = filepath.Join("helpers", "Seeds", "places.json")
+	places, err := loadJSONStrings(relativePath)
 	if err != nil {
 		fmt.Println("Błąd wczytywania places.json:", err)
 		return
 	}
 
-	cities, err := loadCities("C:\\Users\\Patrys\\dev\\web\\YelpCampGo\\backend\\helpers\\Seeds\\cities.json")
+	relativePath = filepath.Join("helpers", "Seeds", "cities.json")
+	cities, err := loadCities(relativePath)
 	if err != nil {
 		fmt.Println("Błąd wczytywania cities.json:", err)
 		return

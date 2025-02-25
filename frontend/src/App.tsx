@@ -5,6 +5,7 @@ import CampgroundShowPage from "./pages/CampgroundShowPage/CampgroundShowPage.ts
 import CampgroundEdit from "./pages/CampgroundEdit/CampgroundEdit.tsx";
 import CampgroundNew from "./pages/CampgroundNew/CampgroundNew.tsx";
 import Navbar from "./components/Navbar.tsx";
+import ErrorPage from "./pages/ErrorPage/ErrorPage.tsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -38,6 +39,7 @@ export default function App() {
             <Route path="/campgrounds/:id" element={<CampgroundShowPage />} />
             <Route path="/campgrounds/new" element={<CampgroundNew />} />
             <Route path="/campgrounds/:id/edit" element={<CampgroundEdit />} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </BrowserRouter>
         <CssBaseline />
