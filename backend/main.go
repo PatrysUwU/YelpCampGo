@@ -25,6 +25,7 @@ func main() {
 	r.PUT("/campgrounds/:id", controllers.UpdateCampground)
 	r.DELETE("/campgrounds/:id", controllers.DeleteCampground)
 	r.POST("/campgrounds/:id/reviews", controllers.CreateReview)
+	r.GET("/campgrounds/:id/reviews", controllers.GetReviewsByID)
 	err := r.Run()
 	if err != nil {
 		return

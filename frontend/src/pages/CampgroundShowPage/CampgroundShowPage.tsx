@@ -6,6 +6,7 @@ import api from "../../services/api.ts";
 import Box from "@mui/material/Box";
 import { ButtonGroup, capitalize, Paper } from "@mui/material";
 import Button from "@mui/material/Button";
+import RatingForm from "./RatingForm/RatingForm.tsx";
 
 interface Campground {
   title: string;
@@ -99,6 +100,7 @@ export default function CampgroundShowPage() {
               width: "100%",
               aspectRatio: { xs: "16/9", md: "6/4" },
               objectFit: "cover",
+              mr: { xs: 0, sm: 2 },
             }}
           />
           <Paper
@@ -121,9 +123,11 @@ export default function CampgroundShowPage() {
               );
             })}
           </Paper>
+
+          <RatingForm id={campground.ID} />
         </Box>
         <ButtonGroup variant="contained" sx={{ mt: 3 }}>
-          <Button onClick={() => navigate(-1)}>Back</Button>
+          <Button onClick={() => navigate("/")}>Home</Button>
           <Button onClick={() => navigate("./edit")}>Edit</Button>
           <Button onClick={handleDelete}>Delete</Button>
         </ButtonGroup>

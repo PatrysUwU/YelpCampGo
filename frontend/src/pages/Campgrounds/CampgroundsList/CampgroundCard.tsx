@@ -23,7 +23,7 @@ export default function CampgroundCard({
     <Box
       sx={{
         height: { md: 200, xs: 150 },
-        marginTop: "12px",
+        marginY: "12px",
         border: "solid 1px",
         borderColor: "secondary.main",
         borderRadius: "10px",

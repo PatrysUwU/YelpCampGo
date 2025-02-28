@@ -13,7 +13,7 @@ interface Campground {
   image: string;
 }
 
-export default function CampgroundsList() {
+export default function CampgroundsList({ page }: { page: number }) {
   const [campgrounds, setCampgrounds] = useState<Campground[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -22,7 +22,7 @@ export default function CampgroundsList() {
 
     const fetchData = async () => {
       try {
-        const response = await api.get("/campgrounds");
+        const response = await api.get(`/campgrounds?page=${page}`);
         setCampgrounds(response.data.campgrounds);
       } catch (e) {
         console.error("Error fetching campgrounds", e);
@@ -31,7 +31,7 @@ export default function CampgroundsList() {
       }
     };
     fetchData().then();
-  }, []);
+  }, [page]);
 
   return (
     <>
@@ -46,9 +46,12 @@ export default function CampgroundsList() {
                 animation="wave"
               />
             ))
-          : campgrounds.map((campground) => (
-              <CampgroundCard {...campground} key={campground.ID} />
-            ))}
+          : campgrounds.map(
+              (campground) =>
+                campground.ID === 0 || (
+                  <CampgroundCard {...campground} key={campground.ID} />
+                ),
+            )}
       </Box>
     </>
   );

@@ -8,8 +8,8 @@ import (
 )
 
 type reviewBody struct {
-	Content string  `binding:"required"`
-	Rating  float64 `binding:"required"`
+	Review string
+	Rating float64 `binding:"required"`
 }
 
 func CreateReview(c *gin.Context) {
@@ -36,7 +36,7 @@ func CreateReview(c *gin.Context) {
 
 	}
 
-	review := models.ReviewModel{Content: body.Content, Rating: body.Rating}
+	review := models.ReviewModel{Review: body.Review, Rating: body.Rating}
 
 	if err := initializers.DB.Model(&campground).Association("Reviews").Append(&review); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -49,4 +49,27 @@ func CreateReview(c *gin.Context) {
 		"id": review.ID,
 	})
 
+}
+
+func GetReviewsByID(c *gin.Context) {
+	id := c.Param("id")
+	var campground models.CampgroundModel
+	result := initializers.DB.First(&campground, id)
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Campground does not exist",
+		})
+		return
+	}
+	var reviews []models.ReviewModel
+	err := initializers.DB.Model(&campground).Association("Reviews").Find(&reviews)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Error fetching reviews",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"reviews": reviews,
+	})
 }

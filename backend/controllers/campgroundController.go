@@ -4,6 +4,7 @@ import (
 	"backend/initializers"
 	"backend/models"
 	"github.com/gin-gonic/gin"
+	"math"
 	"net/http"
 	"strconv"
 )
@@ -77,6 +78,7 @@ func UpdateCampground(c *gin.Context) {
 
 func AllCampgrounds(c *gin.Context) {
 	var campgrounds []models.CampgroundModel
+	page := c.DefaultQuery("page", strconv.Itoa(0))
 	result := initializers.DB.Find(&campgrounds)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -84,12 +86,21 @@ func AllCampgrounds(c *gin.Context) {
 		})
 		return
 	}
+	intPage, err := strconv.Atoi(page)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "page does not exist",
+		})
+		return
+	}
+	start := intPage * 20
 	c.JSON(http.StatusOK, gin.H{
-		"campgrounds": campgrounds,
+		"campgrounds": campgrounds[start : start+20],
+		"maxPages":    math.Ceil(float64(len(campgrounds) / 20)),
 	})
 }
-
 func CampgroundByID(c *gin.Context) {
+
 	var campground models.CampgroundModel
 	_ = initializers.DB.First(&campground, c.Param("id"))
 
