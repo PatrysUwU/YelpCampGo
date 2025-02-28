@@ -125,8 +125,10 @@ func DeleteCampground(c *gin.Context) {
 		})
 		return
 	}
-
-	initializers.DB.Delete(&models.CampgroundModel{}, id)
+	var campground models.CampgroundModel
+	initializers.DB.First(&campground, id)
+	initializers.DB.Select("Reviews").Delete(&campground)
+	initializers.DB.Delete(&campground)
 	c.JSON(http.StatusOK, gin.H{})
 
 }
